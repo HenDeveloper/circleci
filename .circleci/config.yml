@@ -4,16 +4,10 @@ version: 2.1
 orbs:
   win: circleci/windows@5.0
 
-# Mendefinisikan executor dengan Windows Server 2022
-executors:
-  windows-executor:
-    executor:
-      name: win/server-2022
-      version: "current"
-
 jobs:
   setup-windows:
-    executor: windows-executor
+    docker:
+      - image: circleci/windows:server-2022
     resource_class: large  # Sesuaikan dengan kebutuhan
     steps:
       - checkout
