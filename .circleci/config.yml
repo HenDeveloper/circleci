@@ -3,13 +3,11 @@ version: 2.1
 executors:
   windows-executor:
     machine:
-      image: windows-server-2022
-      size: medium
+      image: "windows-server-2022"
 
 jobs:
   setup-windows:
     executor: windows-executor
-    timeout_in_minutes: 300
     steps:
       - checkout
       - run:
