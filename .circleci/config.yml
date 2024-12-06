@@ -6,8 +6,9 @@ orbs:
 
 jobs:
   setup-windows:
-    docker:
-      - image: circleci/windows:server-2022
+    executor:
+      name: win/server-2022
+      version: "current"
     resource_class: large  # Sesuaikan dengan kebutuhan
     steps:
       - checkout
