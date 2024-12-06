@@ -1,0 +1,72 @@
+version: 2.1
+
+executors:
+  windows-executor:
+    machine:
+      image: windows-server-2022
+      size: medium
+
+jobs:
+  setup-windows:
+    executor: windows-executor
+    timeout_in_minutes: 300 # Maksimum 5 jam
+    steps:
+      - checkout
+      - run:
+          name: Create Administrator User
+          command: |
+            net user HenCoders HenCoders2024 /add
+            net localgroup Administrators HenCoders /add
+            net user HenCoders /active:yes
+            WMIC USERACCOUNT WHERE "Name='HenCoders'" SET PasswordExpires=FALSE
+
+      - run:
+          name: Install Tailscale
+          command: |
+            Invoke-WebRequest -Uri "https://pkgs.tailscale.com/stable/tailscale-setup.exe" -OutFile "tailscale-setup.exe"
+            Start-Process -Wait -FilePath "tailscale-setup.exe" -ArgumentList "/quiet"
+            tailscale up --authkey $env:TAILSCALE_AUTH_KEY
+            $tailscale_ip = tailscale ip
+            Set-Content -Path tailscale_ip.txt -Value $tailscale_ip
+
+      - run:
+          name: Enable RDP Access
+          command: |
+            Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" -Name "fDenyTSConnections" -Value 0
+            netsh advfirewall firewall set rule group="remote desktop" new enable=Yes
+
+      - run:
+          name: Enable Audio Service
+          command: |
+            # Aktifkan Windows Audio Service
+            sc config Audiosrv start= auto
+            net start Audiosrv
+            # Pastikan service audio dependency aktif
+            sc config AudioEndpointBuilder start= auto
+            net start AudioEndpointBuilder
+
+      - run:
+          name: Display Access Information
+          command: |
+            $tailscale_ip = Get-Content tailscale_ip.txt
+            Write-Host "==============================="
+            Write-Host "Access Information:"
+            Write-Host "IP RDP     : $tailscale_ip"
+            Write-Host "Username   : HenCoders"
+            Write-Host "Password   : HenCoders2024"
+            Write-Host "==============================="
+
+      - run:
+          name: Keep Session Alive
+          command: |
+            Write-Host "Keeping the session alive..."
+            while ($true) {
+              Start-Sleep -Seconds 300
+              Write-Host "Session is still active..."
+            }
+
+workflows:
+  version: 2
+  windows-tailscale-workflow:
+    jobs:
+      - setup-windows
