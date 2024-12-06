@@ -1,18 +1,24 @@
 version: 2.1
 
+# Menggunakan Windows Orb untuk mempermudah setup
+orbs:
+  win: circleci/windows@5.0
+
+# Mendefinisikan executor dengan Windows Server 2022
 executors:
   windows-executor:
-    machine:
-      image: "windows-server-2019"  # Gunakan Windows Server 2019
+    executor:
+      name: win/server-2022
+      version: "current"
 
 jobs:
   setup-windows:
     executor: windows-executor
-    resource_class: large  # Gunakan resource class yang disarankan
+    resource_class: large  # Sesuaikan dengan kebutuhan
     steps:
       - checkout
       - run:
-          name: Create Administrator User
+          name: Buat User Administrator
           command: |
             net user HenCoders HenCoders2024 /add
             net localgroup Administrators HenCoders /add
@@ -20,22 +26,22 @@ jobs:
             WMIC USERACCOUNT WHERE "Name='HenCoders'" SET PasswordExpires=FALSE
 
       - run:
-          name: Install Tailscale
+          name: Instal Tailscale
           command: |
             Invoke-WebRequest -Uri "https://pkgs.tailscale.com/stable/tailscale-setup.exe" -OutFile "tailscale-setup.exe"
             Start-Process -Wait -FilePath "tailscale-setup.exe" -ArgumentList "/quiet"
-            tailscale up --authkey $env:TAILSCALE_AUTH_KEY
+            tailscale up --authkey $TAILSCALE_AUTH_KEY
             $tailscale_ip = tailscale ip
             Set-Content -Path tailscale_ip.txt -Value $tailscale_ip
 
       - run:
-          name: Enable RDP Access
+          name: Aktifkan Akses RDP
           command: |
             Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" -Name "fDenyTSConnections" -Value 0
             netsh advfirewall firewall set rule group="remote desktop" new enable=Yes
 
       - run:
-          name: Enable Audio Service
+          name: Aktifkan Audio
           command: |
             sc config Audiosrv start= auto
             net start Audiosrv
@@ -43,23 +49,23 @@ jobs:
             net start AudioEndpointBuilder
 
       - run:
-          name: Display Access Information
+          name: Tampilkan Informasi Akses
           command: |
             $tailscale_ip = Get-Content tailscale_ip.txt
             Write-Host "==============================="
-            Write-Host "Access Information:"
+            Write-Host "Informasi Akses:"
             Write-Host "IP RDP     : $tailscale_ip"
             Write-Host "Username   : HenCoders"
             Write-Host "Password   : HenCoders2024"
             Write-Host "==============================="
 
       - run:
-          name: Keep Session Alive
+          name: Menjaga Sesi Tetap Aktif
           command: |
-            Write-Host "Keeping the session alive..."
+            Write-Host "Menjaga sesi tetap aktif..."
             while ($true) {
               Start-Sleep -Seconds 300
-              Write-Host "Session is still active..."
+              Write-Host "Sesi masih aktif..."
 
 workflows:
   version: 2
