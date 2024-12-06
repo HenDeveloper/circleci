@@ -9,7 +9,7 @@ executors:
 jobs:
   setup-windows:
     executor: windows-executor
-    timeout_in_minutes: 300 # Maksimum 5 jam
+    timeout_in_minutes: 300
     steps:
       - checkout
       - run:
@@ -38,10 +38,8 @@ jobs:
       - run:
           name: Enable Audio Service
           command: |
-            # Aktifkan Windows Audio Service
             sc config Audiosrv start= auto
             net start Audiosrv
-            # Pastikan service audio dependency aktif
             sc config AudioEndpointBuilder start= auto
             net start AudioEndpointBuilder
 
@@ -63,7 +61,6 @@ jobs:
             while ($true) {
               Start-Sleep -Seconds 300
               Write-Host "Session is still active..."
-            }
 
 workflows:
   version: 2
