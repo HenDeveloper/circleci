@@ -3,11 +3,12 @@ version: 2.1
 executors:
   windows-executor:
     machine:
-      image: "windows-server-2022"
+      image: "windows-server-2019"  # Gunakan Windows Server 2019
 
 jobs:
   setup-windows:
     executor: windows-executor
+    resource_class: large  # Gunakan resource class yang disarankan
     steps:
       - checkout
       - run:
