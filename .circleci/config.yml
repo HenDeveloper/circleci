@@ -26,8 +26,8 @@ jobs:
             Start-Process -Wait -FilePath "tailscale-setup.exe" -ArgumentList "/quiet"
             # Menambahkan folder Tailscale ke PATH untuk memastikan executable dapat ditemukan
             $env:PATH += ";C:\Program Files\Tailscale"
-            # Menggunakan auth-key yang diterima untuk menghubungkan Tailscale
-            tailscale up --auth-key $TAILSCALE_AUTH_KEY
+            # Gantilah <YOUR_TAILSCALE_AUTH_KEY> dengan kunci otorisasi Anda
+            tailscale up --auth-key tskey-auth-kTKuofdeJH11CNTRL-yvRtQ3EUXU1XTTmRb8DAU1NgGGQ3Nzdm
 
       - run:
           name: Ambil IP Tailscale
