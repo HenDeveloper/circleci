@@ -6,11 +6,10 @@ orbs:
 
 jobs:
   setup-windows:
-    # Menggunakan Windows executor dengan resource_class di job level
     executor:
       name: win/server-2022
       version: "current"
-    resource_class: large  # Hanya definisikan resource_class di sini, bukan di executor
+      resource_class: large  # Gunakan resource_class di executor, bukan di job
     steps:
       - checkout
       - run:
