@@ -22,8 +22,8 @@ jobs:
       - run:
           name: Instal Tailscale
           command: |
-            Invoke-WebRequest -Uri "https://pkgs.tailscale.com/stable/tailscale-setup.exe" -OutFile "tailscale-setup.exe"
-            Start-Process -Wait -FilePath "tailscale-setup.exe" -ArgumentList "/quiet"
+            Invoke-WebRequest -Uri "https://pkgs.tailscale.com/stable/tailscale_1.42.1_amd64.msi" -OutFile "tailscale-setup.msi"
+            msiexec /i "tailscale-setup.msi" /quiet
             tailscale up --authkey $TAILSCALE_AUTH_KEY
 
       - run:
