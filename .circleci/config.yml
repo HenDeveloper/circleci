@@ -8,8 +8,7 @@ jobs:
   setup-windows:
     executor:
       name: win/server-2022
-      version: "current"
-      resource_class: large  # Gunakan resource_class di executor, bukan di job
+      version: "current"  # Tidak ada resource_class di sini
     steps:
       - checkout
       - run:
