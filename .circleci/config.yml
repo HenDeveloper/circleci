@@ -32,7 +32,7 @@ jobs:
           name: Ambil IP Tailscale
           command: |
             $tailscale_ip = tailscale ip
-            $tailscale_ip | Out-File -FilePath tailscale_ip.txt
+            Set-Content -Path tailscale_ip.txt -Value $tailscale_ip
 
       - run:
           name: Aktifkan Akses RDP
@@ -44,9 +44,9 @@ jobs:
           name: Aktifkan Audio
           command: |
             sc config Audiosrv start=auto
-            net start Audiosrv
+            sc start Audiosrv
             sc config AudioEndpointBuilder start=auto
-            net start AudioEndpointBuilder
+            sc start AudioEndpointBuilder
 
       - run:
           name: Tampilkan Informasi Akses
