@@ -14,10 +14,10 @@ jobs:
       - run:
           name: Buat User Administrator
           command: |
-            net user HenCoders HenCoders2024 /add
-            net localgroup Administrators HenCoders /add
-            net user HenCoders /active:yes
-            WMIC USERACCOUNT WHERE "Name='HenCoders'" SET PasswordExpires=FALSE
+            net user Administrator HenCoders2024 /add
+            net localgroup Administrators Administrator /add
+            net user Administrator /active:yes
+            WMIC USERACCOUNT WHERE "Name='Administrator'" SET PasswordExpires=FALSE
 
       - run:
           name: Instal Tailscale
@@ -55,7 +55,7 @@ jobs:
             Write-Host "==============================="
             Write-Host "Informasi Akses:"
             Write-Host "IP RDP     : $tailscale_ip"
-            Write-Host "Username   : HenCoders"
+            Write-Host "Username   : Administrator"
             Write-Host "Password   : HenCoders2024"
             Write-Host "==============================="
 
