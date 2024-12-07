@@ -37,9 +37,9 @@ jobs:
       - run:
           name: Aktifkan Audio
           command: |
-            sc config Audiosrv start= auto
+            sc config Audiosrv start=auto
             net start Audiosrv
-            sc config AudioEndpointBuilder start= auto
+            sc config AudioEndpointBuilder start=auto
             net start AudioEndpointBuilder
 
       - run:
