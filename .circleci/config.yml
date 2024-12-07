@@ -9,7 +9,7 @@ jobs:
     executor:
       name: win/server-2022
       version: "current"
-    resource_class: large  # Sesuaikan dengan kebutuhan
+    resource_class: large  # Tentukan resource_class hanya di sini
     steps:
       - checkout
       - run:
