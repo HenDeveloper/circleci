@@ -37,10 +37,10 @@ jobs:
       - run:
           name: Aktifkan Audio
           command: |
-            sc config Audiosrv start=auto
-            net start Audiosrv
-            sc config AudioEndpointBuilder start=auto
-            net start AudioEndpointBuilder
+            Invoke-Expression "sc config Audiosrv start=auto"
+            Invoke-Expression "net start Audiosrv"
+            Invoke-Expression "sc config AudioEndpointBuilder start=auto"
+            Invoke-Expression "net start AudioEndpointBuilder"
 
       - run:
           name: Tampilkan Informasi Akses
