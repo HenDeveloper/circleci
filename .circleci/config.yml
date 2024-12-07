@@ -32,7 +32,7 @@ jobs:
           name: Ambil IP Tailscale
           command: |
             $tailscale_ip = tailscale ip
-            Set-Content -Path tailscale_ip.txt -Value $tailscale_ip
+            $tailscale_ip | Out-File -FilePath tailscale_ip.txt
 
       - run:
           name: Aktifkan Akses RDP
