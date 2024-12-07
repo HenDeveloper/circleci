@@ -6,10 +6,11 @@ orbs:
 
 jobs:
   setup-windows:
+    # Menggunakan Windows executor dengan resource_class di job level
     executor:
       name: win/server-2022
       version: "current"
-    resource_class: large  # Tentukan resource_class di sini
+    resource_class: large  # Hanya definisikan resource_class di sini, bukan di executor
     steps:
       - checkout
       - run:
@@ -38,11 +39,8 @@ jobs:
       - run:
           name: Aktifkan Audio
           command: |
-            # Mengonfigurasi layanan Audio agar dimulai secara otomatis
             sc config Audiosrv start= auto
             net start Audiosrv
-
-            # Mengonfigurasi layanan AudioEndpointBuilder agar dimulai secara otomatis
             sc config AudioEndpointBuilder start= auto
             net start AudioEndpointBuilder
 
