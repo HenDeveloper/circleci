@@ -41,6 +41,12 @@ jobs:
             netsh advfirewall firewall set rule group="remote desktop" new enable=Yes
 
       - run:
+          name: Verifikasi Layanan Remote Desktop
+          command: |
+            Get-Service -Name TermService
+            Start-Service -Name TermService
+
+      - run:
           name: Aktifkan Audio
           command: |
             sc config Audiosrv start=auto
