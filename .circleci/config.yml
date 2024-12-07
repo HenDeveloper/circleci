@@ -66,6 +66,7 @@ jobs:
             while ($true) {
               Start-Sleep -Seconds 300
               Write-Host "Sesi masih aktif..."
+            }  # Pastikan blok while ditutup dengan benar
 
 workflows:
   version: 2
