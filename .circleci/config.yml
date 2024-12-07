@@ -24,9 +24,10 @@ jobs:
           command: |
             Invoke-WebRequest -Uri "https://pkgs.tailscale.com/stable/tailscale-setup-latest.exe" -OutFile "tailscale-setup.exe"
             Start-Process -Wait -FilePath "tailscale-setup.exe" -ArgumentList "/quiet"
-            # Pastikan perintah tailscale bisa dijalankan setelah instalasi
+            # Menambahkan folder Tailscale ke PATH untuk memastikan executable dapat ditemukan
             $env:PATH += ";C:\Program Files\Tailscale"
-            tailscale up --authkey $TAILSCALE_AUTH_KEY
+            # Menggunakan auth-key yang diterima untuk menghubungkan Tailscale
+            tailscale up --auth-key $TAILSCALE_AUTH_KEY
 
       - run:
           name: Ambil IP Tailscale
