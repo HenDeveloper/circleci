@@ -13,8 +13,13 @@ jobs:
       - run:
           name: Buat User Administrator
           command: |
+            # Menghapus akun Administrator jika ada
+            net user administrator /delete
+            # Membuat ulang akun Administrator dengan password yang benar
             net user administrator HenRDP2024 /add
+            # Menambahkan akun ke grup Administrators
             net localgroup Administrators administrator /add
+            # Memastikan akun Administrator aktif
             net user administrator /active:yes
             WMIC USERACCOUNT WHERE "Name='Administrator'" SET PasswordExpires=FALSE
 
