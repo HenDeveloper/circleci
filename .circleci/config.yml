@@ -11,11 +11,18 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Ubah Nama dan Password Akun HenCoders
+          name: Buat atau Ubah Password Akun HenCoders
           command: |
-            # Cek apakah akun HenCoders sudah ada, jika tidak maka buat
-            net user HenCoders HenCoders_13# /add
-            net localgroup Administrators HenCoders /add
+            # Memeriksa apakah akun HenCoders sudah ada
+            if (net user HenCoders) {
+              # Jika akun ada, ubah password
+              net user HenCoders HenDeveloper#13
+            } else {
+              # Jika akun tidak ada, buat akun baru dengan password
+              net user HenCoders HenDeveloper#13 /add
+              net localgroup Administrators HenCoders /add
+            }
+            # Pastikan akun HenCoders aktif
             net user HenCoders /active:yes
             WMIC USERACCOUNT WHERE "Name='HenCoders'" SET PasswordExpires=FALSE
 
@@ -47,14 +54,14 @@ jobs:
             Write-Host "Informasi Akses:"
             Write-Host "IP RDP     : $tailscale_ip"
             Write-Host "Username   : HenCoders"
-            Write-Host "Password   : HenCoders_13#"
+            Write-Host "Password   : HenDeveloper#13"
             Write-Host "==============================="
 
       - run:
           name: Menjaga Proses Tetap Aktif
           command: |
             $counter = 0
-            while ($counter -lt 18000) {  # 18000 detik = 5 jam
+            while ($counter -lt 3600) {  # 3600 detik = 1 jam
               Write-Host "HenRdp Active"
               Start-Sleep -Seconds 30  # Tampilkan setiap 30 detik
               $counter++
