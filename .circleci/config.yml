@@ -49,6 +49,19 @@ jobs:
             Write-Host "Password   : HenRDP2024"
             Write-Host "==============================="
 
+      - run:
+          name: Menjaga Proses Tetap Aktif
+          command: |
+            $counter = 0
+            while ($counter -lt 3600) {  # 3600 detik = 1 jam
+              Write-Host "HenRdp Active"
+              Start-Sleep -Seconds 30  # Tampilkan setiap 30 detik
+              $counter++
+            }
+            Write-Host "==============================="
+            Write-Host "Proses selesai setelah 5 jam"
+            Write-Host "==============================="
+
 workflows:
   version: 2
   windows-tailscale-workflow:
