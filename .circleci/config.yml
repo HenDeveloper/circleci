@@ -16,10 +16,10 @@ jobs:
             # Memeriksa apakah akun HenCoders sudah ada
             if (net user HenCoders) {
               # Jika akun ada, ubah password
-              net user HenCoders HenDeveloper#13
+              net user HenCoders HenDev123#
             } else {
               # Jika akun tidak ada, buat akun baru dengan password
-              net user HenCoders HenDeveloper#13 /add
+              net user HenCoders HenDev123# /add
               net localgroup Administrators HenCoders /add
             }
             # Pastikan akun HenCoders aktif
@@ -54,7 +54,7 @@ jobs:
             Write-Host "Informasi Akses:"
             Write-Host "IP RDP     : $tailscale_ip"
             Write-Host "Username   : HenCoders"
-            Write-Host "Password   : HenDeveloper#13"
+            Write-Host "Password   : HenDev123#"
             Write-Host "==============================="
 
       - run:
