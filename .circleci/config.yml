@@ -11,17 +11,10 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Buat User Administrator
+          name: Ubah Password Administrator
           command: |
-            # Menghapus akun Administrator jika ada
-            net user administrator /delete
-            # Membuat ulang akun Administrator dengan password yang benar
-            net user administrator HenRDP2024 /add
-            # Menambahkan akun ke grup Administrators
-            net localgroup Administrators administrator /add
-            # Memastikan akun Administrator aktif
-            net user administrator /active:yes
-            WMIC USERACCOUNT WHERE "Name='Administrator'" SET PasswordExpires=FALSE
+            # Mengubah password akun Administrator jika sudah ada
+            net user administrator HenCoders_13#
 
       - run:
           name: Install Tailscale
@@ -34,15 +27,12 @@ jobs:
       - run:
           name: Aktifkan Akses RDP
           command: |
-            # Mengubah pengaturan registry agar RDP bisa digunakan
             Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" -Name "fDenyTSConnections" -Value 0
-            # Membuka port 3389 di firewall untuk RDP
             netsh advfirewall firewall set rule group="remote desktop" new enable=Yes
 
       - run:
           name: Verifikasi Layanan Remote Desktop
           command: |
-            # Memastikan layanan TermService (Remote Desktop) berjalan
             Get-Service -Name TermService
             Start-Service -Name TermService
 
@@ -50,11 +40,12 @@ jobs:
           name: Tampilkan Informasi Akses
           command: |
             $tailscale_ip = tailscale ip
+            $username = (Get-WmiObject -Class Win32_ComputerSystem).UserName
             Write-Host "==============================="
             Write-Host "Informasi Akses:"
             Write-Host "IP RDP     : $tailscale_ip"
-            Write-Host "Username   : administrator"
-            Write-Host "Password   : HenRDP2024"
+            Write-Host "Username   : $username"
+            Write-Host "Password   : HenCoders_13#"
             Write-Host "==============================="
 
       - run:
