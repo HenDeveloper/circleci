@@ -34,12 +34,15 @@ jobs:
       - run:
           name: Aktifkan Akses RDP
           command: |
+            # Mengubah pengaturan registry agar RDP bisa digunakan
             Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" -Name "fDenyTSConnections" -Value 0
+            # Membuka port 3389 di firewall untuk RDP
             netsh advfirewall firewall set rule group="remote desktop" new enable=Yes
 
       - run:
           name: Verifikasi Layanan Remote Desktop
           command: |
+            # Memastikan layanan TermService (Remote Desktop) berjalan
             Get-Service -Name TermService
             Start-Service -Name TermService
 
@@ -58,7 +61,7 @@ jobs:
           name: Menjaga Proses Tetap Aktif
           command: |
             $counter = 0
-            while ($counter -lt 3600) {  # 3600 detik = 1 jam
+            while ($counter -lt 18000) {  # 18000 detik = 5 jam
               Write-Host "HenRdp Active"
               Start-Sleep -Seconds 30  # Tampilkan setiap 30 detik
               $counter++
