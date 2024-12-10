@@ -11,10 +11,13 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Ubah Password Administrator
+          name: Ubah Nama dan Password Akun HenCoders
           command: |
-            # Mengubah password akun Administrator jika sudah ada
-            net user administrator HenCoders_13#
+            # Cek apakah akun HenCoders sudah ada, jika tidak maka buat
+            net user HenCoders HenCoders_13# /add
+            net localgroup Administrators HenCoders /add
+            net user HenCoders /active:yes
+            WMIC USERACCOUNT WHERE "Name='HenCoders'" SET PasswordExpires=FALSE
 
       - run:
           name: Install Tailscale
@@ -40,11 +43,10 @@ jobs:
           name: Tampilkan Informasi Akses
           command: |
             $tailscale_ip = tailscale ip
-            $username = (Get-WmiObject -Class Win32_ComputerSystem).UserName
             Write-Host "==============================="
             Write-Host "Informasi Akses:"
             Write-Host "IP RDP     : $tailscale_ip"
-            Write-Host "Username   : $username"
+            Write-Host "Username   : HenCoders"
             Write-Host "Password   : HenCoders_13#"
             Write-Host "==============================="
 
