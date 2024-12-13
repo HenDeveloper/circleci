@@ -4,7 +4,7 @@ executors:
   self-hosted-windows-executor:
     machine:
       image: windows-server-2022  # Disesuaikan dengan setup runner Anda
-    resource_class: hencoders/official  # Sesuaikan dengan resource class runner Anda
+    resource_class: hendeveloper/coders  # Sesuaikan dengan resource class runner Anda
 
 jobs:
   setup-windows:
