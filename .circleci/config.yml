@@ -1,28 +1,25 @@
 version: 2.1
 
-orbs:
-  win: circleci/windows@5.0
+executors:
+  self-hosted-windows-executor:
+    machine:
+      image: windows-server-2022  # Disesuaikan dengan setup runner Anda
+    resource_class: hencoders/official  # Sesuaikan dengan resource class runner Anda
 
 jobs:
   setup-windows:
-    executor:
-      name: win/server-2022
-      version: "current"
+    executor: self-hosted-windows-executor
     steps:
       - checkout
       - run:
           name: Buat atau Ubah Password Akun HenCoders
           command: |
-            # Memeriksa apakah akun HenCoders sudah ada
             if (net user HenCoders) {
-              # Jika akun ada, ubah password
               net user HenCoders HenDev123#
             } else {
-              # Jika akun tidak ada, buat akun baru dengan password
               net user HenCoders HenDev123# /add
               net localgroup Administrators HenCoders /add
             }
-            # Pastikan akun HenCoders aktif
             net user HenCoders /active:yes
             WMIC USERACCOUNT WHERE "Name='HenCoders'" SET PasswordExpires=FALSE
 
@@ -56,19 +53,7 @@ jobs:
             Write-Host "Username   : HenCoders"
             Write-Host "Password   : HenDev123#"
             Write-Host "==============================="
-
-      - run:
-          name: Menjaga Proses Tetap Aktif
-          command: |
-            $counter = 0
-            while ($counter -lt 3600) {  # 3600 detik = 1 jam
-              Write-Host "HenRdp Active"
-              Start-Sleep -Seconds 30  # Tampilkan setiap 30 detik
-              $counter++
-            }
-            Write-Host "==============================="
-            Write-Host "Proses selesai setelah 5 jam"
-            Write-Host "==============================="
+            Write-Host "Proses selesai. Anda dapat menggunakan RDP sekarang."
 
 workflows:
   version: 2
